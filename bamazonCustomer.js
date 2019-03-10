@@ -18,7 +18,7 @@ connection.connect(function(err) {
 });
 
 function start() {
-    connection.query("SLECT * FROM products", function(err, results){
+    connection.query("SELECT * FROM products", function(err, results){
         if (err) throw err;
 
         inquirer.prompt([
@@ -40,17 +40,16 @@ function start() {
                 message:"Please enter a quantity that you wish to purchase"
             }
         ]).then(function(answer){
-            chosenProduct;
+            var chosenProduct;
             for (i=0; i<results.length; i++){
-                if(results[i].product_name == answer.choice){
+                if(results[i].product_name === answer.choice){
                     chosenProduct = results[i];
                 }
             }
-
-            if(chosenProduct.stock_quantity < parseInt(answer.purchase)){
+            if(chosenProduct.stock_quantity > parseInt(answer.purchase)){
                 connection.query("UPDATE products SET ? WHERE ?",
                 [
-                    {stock_quantity: stock_quantity-answer.purchase},
+                    {stock_quantity: chosenProduct.stock_quantity-answer.purchase},
                     {item_id: chosenProduct.item_id}
                 ],
                 function(err){
