@@ -56,8 +56,13 @@ function start() {
                 function(err){
                     if (err) throw err;
                     total = chosenProduct.price*parseInt(answer.purchase);
-                    console.log("Total Price: " + total)
-                }
+                    console.log("Total Price: " + total);
+                    start();
+                });
+            }
+            else{
+                console.log("Sorry. Not enough products in stock to satisfy your order.")
+                start();
             }
         })
     })
